@@ -5,8 +5,8 @@ public class InventoryDemo : Inventory<DemoData>
 {
     private void Update()
     {
-        DemoData dataA = new DemoData("HelloWorld");
-        DemoData dataB = new DemoData("Gellow");
+        DemoData dataA = new DemoData("HelloWorld","Hello world, programmed to work but not to fell... don´t even know if this is real.");
+        DemoData dataB = new DemoData("Gellow","Gellow is yellow, so hello!!");
         if (Input.GetKeyDown(KeyCode.A))
         {
             Add(dataA);

@@ -1,30 +1,35 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace HotQueen.Inventory
 {
 
-    public abstract class Inventory<T> : MonoBehaviour
+    public abstract class Inventory<T> : MonoBehaviour where T : struct
     {
-        [SerializeField] private InventoryUI inventoryUI;
         [SerializeField] private float size = 10;
         private List<SlotData<T>> inventoryList = new List<SlotData<T>>();
 
+        //Callback
+        public UnityEvent<List<SlotData<T>>> OnInventoryUpdated;
 
         public void Add(T item)
         {
             Debug.Log("Adding item to inventory!");
             if (inventoryList.Count < size)
             {
-                if (TryFind(item, out SlotData<T> slot))
+                SlotData<T> slot = new SlotData<T>();
+                if (TryFind(item, out slot))
                 {
                     ChangeCount(slot, slot.count += 1);
                 }
                 else
                 {
-                    inventoryList.Add(new SlotData<T>(item, 1));
+                    slot = new SlotData<T>(item, 1);
+                    inventoryList.Add(slot);
                 }
+                OnInventoryUpdated?.Invoke(inventoryList);
             }
         }
 
@@ -88,10 +93,14 @@ namespace HotQueen.Inventory
                 {
                     ChangeCount(slot, slot.count -= 1);
                 }
-                else
+
+                if (slot.count == 0)
                 {
                     inventoryList.RemoveAt(index);
                 }
+
+                OnInventoryUpdated?.Invoke(inventoryList);
+
             }
         }
 

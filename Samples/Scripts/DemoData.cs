@@ -1,13 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public struct DemoData
 {
-    public string message;
+    public string name;
+    public string description;
 
-    public DemoData(string message)
+    public DemoData(string name, string description)
     {
-        this.message = message;
+        this.name = name;
+        this.description = description;
     }
 }
